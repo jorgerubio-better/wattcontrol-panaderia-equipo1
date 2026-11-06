@@ -292,6 +292,42 @@ public:
     }
 
     // Getters para consultar lo acumulado en el medidor
+    float getKWh() { return kWhAcumulados; }
+    float getCosto() { return costoAcumulado; }
+};
+
+// =============================================================
+// RELACION 4 (ASOCIACION):
+// Mercado existe por fuera del Negocio; da el precio de cada hora y los embalses
+// =============================================================
+class Mercado {
+private:
+    // Nivel actual de los embalses del pais en porcentaje (0 a 100 %)
+    float nivelEmbalses;
+
+public:
+    // Constructor: inicia los embalses en el nivel por defecto (65 %)
+    Mercado(float embalsesInicial) {
+        nivelEmbalses = embalsesInicial;
+    }
+
+    // Actualiza el nivel de los embalses cuando el usuario ingresa una lectura manual
+    void setEmbalses(float nuevoNivel) {
+        nivelEmbalses = nuevoNivel;
+    }
+
+    // Devuelve el nivel actual de los embalses
+    float getEmbalses() {
+        return nivelEmbalses;
+    }
+
+    // Genera el precio de bolsa al azar dentro del rango real de XM para cada franja
+    float precioHora(int hora) {
+        int minimo, maximo;
+        // Franja 1: Madrugada (0 a 6 h) -> 398 a 640 COP/kWh
+        if (hora <= HORA_FIN_MADRUGADA) {
+            minimo = PRECIO_MIN_MADRUGADA;
+            maximo = PRECIO_MAX_MADRUGADA;
 
 int main() {
     return 0;
