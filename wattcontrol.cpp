@@ -354,6 +354,79 @@ public:
 // Clase principal Negocio: reune el Medidor (composicion), el Mercado (asociacion)
 // y las Cargas (agregacion), aplica la Regla 6 y simula las 24 horas
 // =============================================================
+class Negocio {
+private:
+    // Nombre del negocio
+    string nombre;
+    // COMPOSICION: el Medidor es un atributo por valor; nace y muere con el Negocio
+    Medidor medidor;
+    // AGREGACION: arreglo de punteros a Carga. Las cargas se crean en main() y se agregan aqui
+    Carga* cargas[MAX_CARGAS];
+    // Cantidad de cargas agregadas actualmente
+    int numCargas;
+    // ASOCIACION: puntero al Mercado. El Negocio no es dueno del Mercado, solo le pide datos
+    Mercado* mercado;
+
+    // Resultados guardados de la ultima simulacion para mostrarlos en la Opcion 4
+    float costoSinGestor;
+    float kwhSinGestor;
+    int horasSimuladas;
+    int fallasLectura;
+    bool huboEmergencia;
+    bool simulacionRealizada;
+
+public:
+    // Constructor: recibe el nombre del negocio y la direccion del Mercado (Mercado* m)
+    Negocio(string n, Mercado* m) : medidor() {
+        nombre = n;
+        mercado = m;
+        numCargas = 0;
+        costoSinGestor = 0;
+        kwhSinGestor = 0;
+        horasSimuladas = 0;
+        fallasLectura = 0;
+        huboEmergencia = false;
+        simulacionRealizada = false;
+    }
+
+    // AGREGACION: agrega la direccion de una carga creada afuera (Carga* c)
+    void agregarCarga(Carga* c) {
+        if (numCargas < MAX_CARGAS) {
+            cargas[numCargas] = c;
+            numCargas++;
+        }
+    }
+
+    // Muestra la configuracion general del negocio y sus cargas registradas
+    void mostrarConfiguracion() {
+        cout << "=============================================================" << endl;
+        cout << "Negocio: " << nombre << " (Ultimo digito doc: 0-1)" << endl;
+        cout << "Potencia contratada: " << POTENCIA_CONTRATADA << " kW | Precio caro: > $"
+             << PRECIO_CARO << " COP/kWh" << endl;
+        cout << "Alerta de embalses (El Nino): < " << EMBALSES_ALERTA
+             << " % | Hora pico: " << PICO_INICIO << " a " << PICO_FIN << " h" << endl;
+        cout << "Cargas registradas (" << numCargas << "):" << endl;
+        for (int i = 0; i < numCargas; i++) {
+            cout << "  - " << setw(18) << left << cargas[i]->getNombre() << right
+                 << " (" << cargas[i]->getPotencia() << " kW)";
+            if (cargas[i]->esAplazable()) {
+                cout << " [Aplazable | Minimo: " << cargas[i]->getHorasMinimas() << " h/dia]";
+            } else {
+                cout << " [Critica   | Opera 24 h/dia]";
+            }
+            cout << endl;
+        }
+        cout << "=============================================================" << endl;
+    }
+
+    // Regla 6: verifica si la suma de potencias encendidas supera POTENCIA_CONTRATADA.
+    // Si la supera, apaga la carga aplazable encendida de MAYOR potencia y muestra alerta.
+    // Retorna el nombre de la carga apagada por tope (o "" si no hubo sobrecarga).
+    string aplicarReglaPotenciaContratada(bool mostrarAlertaConsola) {
+        float potenciaEncendida = 0;
+        for (int i = 0; i < numCargas; i++) {
+            if (cargas[i]->estaEncendida()) {
+                potenciaEncendida += cargas[i]->getPotencia();
 
 int main() {
     return 0;
