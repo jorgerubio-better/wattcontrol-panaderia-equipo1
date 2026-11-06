@@ -650,6 +650,71 @@ public:
             for (int i = 0; i < numCargas; i++) {
                 cout << setw(19) << (cargas[i]->estaEncendida() ? "ON" : "off");
             }
+            cout << setw(8) << setprecision(1) << kwhHoraCon
+                 << setw(9) << setprecision(0) << costoHoraCon
+                 << "  " << nota << endl;
+        }
+
+        cout << "-------------------------------------------------------------------------------------------------------------" << endl;
+        cout << "Horas simuladas: " << horasSimuladas << " de " << HORAS_DIA
+             << " | fallas de lectura: " << fallasLectura << endl;
+        cout << "Costo con gestor: $" << fixed << setprecision(0) << medidor.getCosto()
+             << " COP (" << setprecision(1) << medidor.getKWh() << " kWh)" << endl;
+        cout << "Costo sin gestor: $" << setprecision(0) << costoSinGestor
+             << " COP (" << setprecision(1) << kwhSinGestor << " kWh)" << endl;
+        cout << "Simulacion terminada. Consulte el detalle completo y alertas en la Opcion 4." << endl;
+    }
+
+    // Opcion 4: Muestra el resumen de la ultima simulacion, el ahorro y la alerta de produccion
+    void mostrarResumen() {
+        if (!simulacionRealizada) {
+            cout << "Aun no se ha ejecutado ninguna simulacion. Use primero la Opcion 3." << endl;
+            return;
+        }
+
+        cout << endl << "===== Resumen de la ultima simulacion: " << nombre << " =====" << endl;
+        cout << "Horas simuladas: " << horasSimuladas << " de " << HORAS_DIA
+             << " | Fallas de lectura (continue): " << fallasLectura << endl;
+        if (huboEmergencia) {
+            cout << "Estado del dia:  DETENIDO POR EMERGENCIA DE RACIONAMIENTO (break)" << endl;
+        }
+
+        cout << endl << "Desempeno por carga:" << endl;
+        bool produccionCompleta = true;
+        for (int i = 0; i < numCargas; i++) {
+            float kwhCarga = cargas[i]->getHorasUso() * cargas[i]->getPotencia();
+            cout << "  - " << setw(18) << left << cargas[i]->getNombre() << right
+                 << ": " << setw(2) << cargas[i]->getHorasUso() << " h encendida | "
+                 << fixed << setprecision(1) << setw(6) << kwhCarga << " kWh";
+
+            if (cargas[i]->esAplazable()) {
+                cout << " (Minimo requerido: " << cargas[i]->getHorasMinimas() << " h -> ";
+                if (cargas[i]->cumplioHorasMinimas()) {
+                    cout << "CUMPLIDO)";
+                } else {
+                    cout << "NO CUMPLIDO)";
+                    produccionCompleta = false;
+                }
+            } else {
+                cout << " (Carga critica)";
+            }
+            cout << endl;
+        }
+
+        // Si alguna carga aplazable no cumplio sus horas minimas, muestra la alerta obligatoria
+        if (!produccionCompleta) {
+            cout << endl << "  [ALERTA] produccion incompleta: una o mas cargas aplazables no alcanzaron" << endl;
+            cout << "           sus horas minimas de operacion diaria." << endl;
+        } else {
+            cout << endl << "  [OK] Produccion diaria completada: todas las cargas cumplieron sus horas minimas." << endl;
+        }
+
+        // Calculo del ahorro en pesos y en porcentaje usando el Medidor (composicion)
+        float costoCon = medidor.getCosto();
+        float ahorroPesos = costoSinGestor - costoCon;
+        float ahorroPorcentaje = 0;
+        if (costoSinGestor > 0) {
+            ahorroPorcentaje = (ahorroPesos / costoSinGestor) * 100.0;
 
 int main() {
     return 0;
