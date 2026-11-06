@@ -427,6 +427,102 @@ public:
         for (int i = 0; i < numCargas; i++) {
             if (cargas[i]->estaEncendida()) {
                 potenciaEncendida += cargas[i]->getPotencia();
+            }
+        }
+
+        // Si la potencia total supera el tope contratado (9.0 kW en la panaderia)...
+        if (potenciaEncendida > POTENCIA_CONTRATADA) {
+            int indiceMayorAplazable = -1;
+            float mayorPotencia = -1.0;
+
+            // Busca entre las cargas aplazables que estan encendidas la de mayor potencia
+            for (int i = 0; i < numCargas; i++) {
+                if (cargas[i]->estaEncendida() && cargas[i]->esAplazable()) {
+                    if (cargas[i]->getPotencia() > mayorPotencia) {
+                        mayorPotencia = cargas[i]->getPotencia();
+                        indiceMayorAplazable = i;
+                    }
+                }
+            }
+
+            // Si encontro una carga aplazable encendida, la apaga y emite la alerta
+            if (indiceMayorAplazable != -1) {
+                string nombreApagada = cargas[indiceMayorAplazable]->getNombre();
+                cargas[indiceMayorAplazable]->apagarPorTope();
+                if (mostrarAlertaConsola) {
+                    cout << "  [ALERTA REGLA 6] Potencia demandada (" << potenciaEncendida
+                         << " kW) supera la contratada (" << POTENCIA_CONTRATADA << " kW)." << endl;
+                    cout << "                   Se apaga la carga aplazable de mayor potencia: "
+                         << nombreApagada << " (" << mayorPotencia << " kW)." << endl;
+                }
+                return nombreApagada;
+            }
+        }
+        return "";
+    }
+
+    // Opcion 2: Evalua y muestra que haria cada carga con la lectura manual (hora, precio, embalses)
+    void evaluarDecisionManual(int hora, float precio, float embalses) {
+        cout << fixed << setprecision(1);
+        cout << endl << "--- Evaluacion puntual de cargas ---" << endl;
+        cout << "Condiciones: Hora " << hora << ":00 | Precio $" << setprecision(0) << precio
+             << " COP/kWh | Embalses " << setprecision(1) << embalses << " %" << endl;
+
+        // Avisos de contexto segun las reglas
+        if (embalses < EMBALSES_ALERTA) {
+            cout << "Estado del sistema: ALERTA FENOMENO DEL NINO (embalses < "
+                 << EMBALSES_ALERTA << " %)" << endl;
+        }
+        if (hora >= PICO_INICIO && hora <= PICO_FIN) {
+            cout << "Estado horario:     HORA PICO (" << PICO_INICIO << " a " << PICO_FIN << " h)" << endl;
+        }
+        if (precio > PRECIO_CARO) {
+            cout << "Estado de tarifa:   ENERGIA CARA (> $" << setprecision(0) << PRECIO_CARO << " COP/kWh)" << endl;
+        }
+
+        // Reinicia temporalmente las cargas para evaluar la hora puntual en limpio
+        for (int i = 0; i < numCargas; i++) {
+            cargas[i]->reiniciarDia();
+        }
+
+        // Paso A: Cada carga toma su decision inicial mediante POLIMORFISMO
+        for (int i = 0; i < numCargas; i++) {
+            if (cargas[i]->debeEncender(hora, precio, embalses)) {
+                cargas[i]->encender();
+            } else {
+                cargas[i]->apagar();
+            }
+        }
+
+        // Paso B: El Negocio aplica la Regla 6 (tope de potencia contratada = 9.0 kW)
+        cout << setprecision(1);
+        string apagadaPorTope = aplicarReglaPotenciaContratada(true);
+
+        // Paso C: Muestra la decision final de cada carga y la potencia total resultante
+        float potenciaFinal = 0;
+        float costoHoraFinal = 0;
+        for (int i = 0; i < numCargas; i++) {
+            bool on = cargas[i]->estaEncendida();
+            cout << "  " << setw(18) << left << cargas[i]->getNombre() << right
+                 << " (" << setprecision(1) << cargas[i]->getPotencia() << " kW): ";
+            if (on) {
+                cout << "ENCENDER" << endl;
+                potenciaFinal += cargas[i]->getPotencia();
+                costoHoraFinal += cargas[i]->costoHora(precio);
+            } else if (cargas[i]->getNombre() == apagadaPorTope) {
+                cout << "APLAZAR / APAGAR (por Regla 6: tope de potencia contratada)" << endl;
+            } else {
+                cout << "APLAZAR / APAGAR (por regla de precio, hora pico o embalses)" << endl;
+            }
+        }
+        cout << "Potencia total encendida: " << setprecision(1) << potenciaFinal
+             << " kW de " << POTENCIA_CONTRATADA << " kW contratados" << endl;
+        cout << "Costo estimado en esta hora: $" << setprecision(0) << costoHoraFinal << " COP" << endl;
+    }
+
+    // Opcion 3: Simula un dia completo (24 horas), comparando Con Gestor vs Sin Gestor
+    void simularDia() {
+        // Reinicia el medidor (composicion), las cargas (agregacion) y las variables del resumen
 
 int main() {
     return 0;
