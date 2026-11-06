@@ -1,13 +1,32 @@
+# ==============================================================================
+# WattControl - Gestor de Energía para Panadería (C++17)
+# Reglas estándar de exclusión de compilación, artefactos y entorno
+# ==============================================================================
+
+# Binarios y ejecutables compilados
 *.exe
 *.out
 *.o
+*.obj
 wattcontrol
+
+# Entornos de desarrollo y configuración local
 .vscode/
+.idea/
+*.swp
+
+# Archivos del sistema operativo
 .DS_Store
-capturas_y_diagrama/
-entregas_zip_individuales/
-kits_video_poo_png/
+Thumbs.db
+
+# Artefactos binarios, reportes y multimedia
 *.pdf
 *.pptx
-Guion_Video_y_Guia_Entrega_POO_EA2.md
-material_referencia/
+*.zip
+*.png
+*.jpg
+*.jpeg
+
+# Archivos temporales y de registro
+*.tmp
+*.log
