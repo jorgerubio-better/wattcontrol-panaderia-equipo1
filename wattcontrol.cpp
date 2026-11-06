@@ -328,6 +328,32 @@ public:
         if (hora <= HORA_FIN_MADRUGADA) {
             minimo = PRECIO_MIN_MADRUGADA;
             maximo = PRECIO_MAX_MADRUGADA;
+        // Franja 2: Manana y mediodia (7 a 14 h) -> 456 a 970 COP/kWh
+        } else if (hora <= HORA_FIN_MANANA) {
+            minimo = PRECIO_MIN_MANANA;
+            maximo = PRECIO_MAX_MANANA;
+        // Franja 3: Tarde (15 a 17 h) -> 596 a 1040 COP/kWh
+        } else if (hora <= HORA_FIN_TARDE) {
+            minimo = PRECIO_MIN_TARDE;
+            maximo = PRECIO_MAX_TARDE;
+        // Franja 4: Hora pico (18 a 20 h) -> 705 a 1612 COP/kWh
+        } else if (hora <= PICO_FIN) {
+            minimo = PRECIO_MIN_PICO;
+            maximo = PRECIO_MAX_PICO;
+        // Franja 5: Noche (21 a 23 h) -> 565 a 970 COP/kWh
+        } else {
+            minimo = PRECIO_MIN_NOCHE;
+            maximo = PRECIO_MAX_NOCHE;
+        }
+        // Retorna un numero aleatorio entre minimo y maximo (incluidos)
+        return minimo + rand() % (maximo - minimo + 1);
+    }
+};
+
+// =============================================================
+// Clase principal Negocio: reune el Medidor (composicion), el Mercado (asociacion)
+// y las Cargas (agregacion), aplica la Regla 6 y simula las 24 horas
+// =============================================================
 
 int main() {
     return 0;
