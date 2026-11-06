@@ -1,0 +1,6 @@
+*.exe
+*.out
+*.o
+wattcontrol
+.vscode/
+.DS_Store
