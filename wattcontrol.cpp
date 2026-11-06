@@ -193,6 +193,77 @@ public:
 
 // =============================================================
 // RELACION 1 (HERENCIA) y RELACION 2 (POLIMORFISMO):
+// CargaCritica ES UNA Carga que nunca se apaga (Regla 1)
+// =============================================================
+class CargaCritica : public Carga {
+public:
+    // Constructor: le pasa el nombre y la potencia al constructor de Carga
+    CargaCritica(string n, float p) : Carga(n, p) {}
+
+    // Regla 1: la carga critica (Nevera de insumos) siempre debe estar encendida,
+    // sin importar la hora, el precio ni el nivel de los embalses
+    bool debeEncender(int hora, float precio, float embalses) override {
+        (void)hora;
+        (void)precio;
+        (void)embalses;
+        return true;
+    }
+};
+
+// =============================================================
+// RELACION 1 (HERENCIA) y RELACION 2 (POLIMORFISMO):
+// CargaAplazable ES UNA Carga que se aplaza segun las Reglas 2 a 5
+// =============================================================
+class CargaAplazable : public Carga {
+private:
+    // Minimo de horas diarias que debe operar para no tener produccion incompleta
+    int horasMinimas;
+    // Turno maximo de horas que requiere operar en el dia
+    int horasTurnoMax;
+
+public:
+    // Constructor: recibe nombre, potencia, horas minimas y horas de turno maximo
+    CargaAplazable(string n, float p, int hMin, int hMax) : Carga(n, p) {
+        horasMinimas = hMin;
+        horasTurnoMax = hMax;
+    }
+
+    // Reglas 2 a 5 expresadas como una condicion logica compuesta con &&, || y !:
+    //   - Regla 2: si embalses < 40 % (alerta de El Nino), se aplaza.
+    //   - Regla 3: si es hora pico (18 a 20 h), se aplaza.
+    //   - Regla 4: si el precio supera el precio "caro" (> 800 COP/kWh), se aplaza.
+    //   - Regla 5: en cualquier otro caso (si aun no ha completado su turno diario), se enciende.
+    bool debeEncender(int hora, float precio, float embalses) override {
+        bool alertaNino = (embalses < EMBALSES_ALERTA);
+        bool horaPico = (hora >= PICO_INICIO && hora <= PICO_FIN);
+        bool precioCaro = (precio > PRECIO_CARO);
+        bool turnoCompleto = (horasUso >= horasTurnoMax);
+
+        // Se aplaza si ocurre cualquiera de las condiciones de restriccion (||);
+        // se enciende si NO (!) se debe aplazar y aun le faltan horas de su turno (&&)
+        bool debeAplazar = alertaNino || horaPico || precioCaro;
+        return !debeAplazar && !turnoCompleto;
+    }
+
+    // Sobreescribe esAplazable() para indicar que la Regla 6 puede apagar esta carga
+    bool esAplazable() override {
+        return true;
+    }
+
+    // Devuelve el minimo de horas diarias exigido para esta carga
+    int getHorasMinimas() override {
+        return horasMinimas;
+    }
+
+    // Verifica si al final del dia cumplio con las horas minimas
+    bool cumplioHorasMinimas() override {
+        return horasUso >= horasMinimas;
+    }
+};
+
+// =============================================================
+// RELACION 3 (COMPOSICION):
+// Medidor es parte interna del Negocio; acumula los kWh y el costo
 
 int main() {
     return 0;
