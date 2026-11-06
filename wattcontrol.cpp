@@ -813,6 +813,27 @@ int main() {
             panaderia.evaluarDecisionManual(horaManual, precioManual, embalsesManual);
             break;
 
-int main() {
+        // Opcion 3: Simular las 24 horas del dia
+        case 3:
+            panaderia.simularDia();
+            break;
+
+        // Opcion 4: Mostrar el resumen detallado y el ahorro de la ultima simulacion
+        case 4:
+            panaderia.mostrarResumen();
+            break;
+
+        // Opcion 0: Salir del programa
+        case 0:
+            cout << "Gracias por usar WattControl. Hasta pronto." << endl;
+            break;
+
+        // default: cualquier opcion fuera del rango 0 a 4
+        default:
+            cout << "Opcion invalida. Por favor elija un numero entre 0 y 4." << endl;
+            break;
+        }
+    } while (opcion != 0);
+
     return 0;
 }
