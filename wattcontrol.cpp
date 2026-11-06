@@ -715,6 +715,103 @@ public:
         float ahorroPorcentaje = 0;
         if (costoSinGestor > 0) {
             ahorroPorcentaje = (ahorroPesos / costoSinGestor) * 100.0;
+        }
+
+        cout << fixed << setprecision(0);
+        cout << endl << "Balance economico y energetico:" << endl;
+        cout << "  Consumo con gestor: " << setprecision(1) << medidor.getKWh() << " kWh" << endl;
+        cout << "  Consumo sin gestor: " << setprecision(1) << kwhSinGestor << " kWh" << endl;
+        cout << "  Costo con gestor:   $" << setprecision(0) << costoCon << " COP" << endl;
+        cout << "  Costo sin gestor:   $" << setprecision(0) << costoSinGestor << " COP" << endl;
+        if (horasSimuladas > 0) {
+            cout << "  Costo promedio/h:   $" << setprecision(0) << (costoCon / horasSimuladas) << " COP/h" << endl;
+        }
+        cout << "  Ahorro obtenido:    $" << setprecision(0) << ahorroPesos << " COP ("
+             << setprecision(1) << ahorroPorcentaje << " %)" << endl;
+    }
+};
+
+// =============================================================
+// Funcion principal main(): crea los objetos, conecta las relaciones y ejecuta el menu
+// =============================================================
+int main() {
+    // Inicializa la semilla de numeros aleatorios para que la simulacion sea reproducible
+    srand(SEMILLA);
+
+    // ASOCIACION: el objeto Mercado se crea de forma independiente en main()
+    Mercado mercado(EMBALSES_INICIAL);
+
+    // HERENCIA y AGREGACION: las 3 cargas de la panaderia se crean afuera del Negocio
+    CargaCritica nevera("Nevera de insumos", POTENCIA_NEVERA);
+    CargaAplazable horno("Horno electrico", POTENCIA_HORNO, HORAS_MIN_HORNO, HORAS_TURNO_HORNO);
+    CargaAplazable amasadora("Amasadora", POTENCIA_AMASADORA, HORAS_MIN_AMASADORA, HORAS_TURNO_AMASADORA);
+
+    // Se crea el Negocio pasandole la direccion del Mercado (&mercado -> Asociacion)
+    // Internamente el Negocio construye su propio Medidor (Composicion)
+    Negocio panaderia("Panaderia El Trigo de Oro", &mercado);
+
+    // Se agregan las direcciones de las cargas al Negocio (&nevera, &horno, &amasadora -> Agregacion)
+    panaderia.agregarCarga(&nevera);
+    panaderia.agregarCarga(&horno);
+    panaderia.agregarCarga(&amasadora);
+
+    // Muestra la ficha inicial del negocio y sus 3 cargas
+    panaderia.mostrarConfiguracion();
+
+    // Variables para la lectura manual (inician con valores validos por defecto)
+    int horaManual = HORA_INICIAL;
+    float precioManual = PRECIO_INICIAL;
+    float embalsesManual = EMBALSES_INICIAL;
+    int opcion;
+
+    // Menu interactivo con do-while y switch (con default)
+    do {
+        cout << endl << "===== Menu Principal WattControl =====" << endl;
+        cout << "1. Ingresar lectura manual (hora, precio, embalses)" << endl;
+        cout << "2. Evaluar decision de cada carga" << endl;
+        cout << "3. Simular un dia completo (24 h)" << endl;
+        cout << "4. Ver resumen de la ultima simulacion" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+        // Opcion 1: Ingresar lectura manual validando cada dato con do-while
+        case 1:
+            do {
+                cout << "Hora del dia (0 a 23): ";
+                cin >> horaManual;
+                if (horaManual < HORA_MINIMA || horaManual > HORA_MAXIMA) {
+                    cout << "  Error: la hora debe estar entre 0 y 23." << endl;
+                }
+            } while (horaManual < HORA_MINIMA || horaManual > HORA_MAXIMA);
+
+            do {
+                cout << "Precio de bolsa (COP/kWh, mayor que 0): ";
+                cin >> precioManual;
+                if (precioManual <= 0) {
+                    cout << "  Error: el precio debe ser mayor que 0." << endl;
+                }
+            } while (precioManual <= 0);
+
+            do {
+                cout << "Nivel de los embalses (0 a 100 %): ";
+                cin >> embalsesManual;
+                if (embalsesManual < EMBALSES_MINIMO || embalsesManual > EMBALSES_MAXIMO) {
+                    cout << "  Error: el nivel de los embalses debe estar entre 0 y 100 %." << endl;
+                }
+            } while (embalsesManual < EMBALSES_MINIMO || embalsesManual > EMBALSES_MAXIMO);
+
+            // Actualiza el nivel de embalses en el Mercado para la siguiente simulacion
+            mercado.setEmbalses(embalsesManual);
+            cout << "Lectura manual guardada correctamente (embalses actualizados a "
+                 << fixed << setprecision(1) << embalsesManual << " %)." << endl;
+            break;
+
+        // Opcion 2: Evaluar la decision de cada carga con la lectura manual vigente
+        case 2:
+            panaderia.evaluarDecisionManual(horaManual, precioManual, embalsesManual);
+            break;
 
 int main() {
     return 0;
