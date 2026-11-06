@@ -264,6 +264,34 @@ public:
 // =============================================================
 // RELACION 3 (COMPOSICION):
 // Medidor es parte interna del Negocio; acumula los kWh y el costo
+// =============================================================
+class Medidor {
+private:
+    // Energia total acumulada en kWh
+    float kWhAcumulados;
+    // Costo total acumulado en pesos colombianos (COP)
+    float costoAcumulado;
+
+public:
+    // Constructor: el medidor inicia en 0 kWh y $0
+    Medidor() {
+        kWhAcumulados = 0;
+        costoAcumulado = 0;
+    }
+
+    // Reinicia el medidor a 0 antes de empezar una nueva simulacion de 24 horas
+    void reiniciar() {
+        kWhAcumulados = 0;
+        costoAcumulado = 0;
+    }
+
+    // Registra el consumo (kWh) y el costo (COP) de una hora de operacion
+    void registrarHora(float kwh, float costo) {
+        kWhAcumulados = kWhAcumulados + kwh;
+        costoAcumulado = costoAcumulado + costo;
+    }
+
+    // Getters para consultar lo acumulado en el medidor
 
 int main() {
     return 0;
