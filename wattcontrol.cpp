@@ -264,6 +264,96 @@ public:
 // =============================================================
 // RELACION 3 (COMPOSICION):
 // Medidor es parte interna del Negocio; acumula los kWh y el costo
+// =============================================================
+class Medidor {
+private:
+    // Energia total acumulada en kWh
+    float kWhAcumulados;
+    // Costo total acumulado en pesos colombianos (COP)
+    float costoAcumulado;
+
+public:
+    // Constructor: el medidor inicia en 0 kWh y $0
+    Medidor() {
+        kWhAcumulados = 0;
+        costoAcumulado = 0;
+    }
+
+    // Reinicia el medidor a 0 antes de empezar una nueva simulacion de 24 horas
+    void reiniciar() {
+        kWhAcumulados = 0;
+        costoAcumulado = 0;
+    }
+
+    // Registra el consumo (kWh) y el costo (COP) de una hora de operacion
+    void registrarHora(float kwh, float costo) {
+        kWhAcumulados = kWhAcumulados + kwh;
+        costoAcumulado = costoAcumulado + costo;
+    }
+
+    // Getters para consultar lo acumulado en el medidor
+    float getKWh() { return kWhAcumulados; }
+    float getCosto() { return costoAcumulado; }
+};
+
+// =============================================================
+// RELACION 4 (ASOCIACION):
+// Mercado existe por fuera del Negocio; da el precio de cada hora y los embalses
+// =============================================================
+class Mercado {
+private:
+    // Nivel actual de los embalses del pais en porcentaje (0 a 100 %)
+    float nivelEmbalses;
+
+public:
+    // Constructor: inicia los embalses en el nivel por defecto (65 %)
+    Mercado(float embalsesInicial) {
+        nivelEmbalses = embalsesInicial;
+    }
+
+    // Actualiza el nivel de los embalses cuando el usuario ingresa una lectura manual
+    void setEmbalses(float nuevoNivel) {
+        nivelEmbalses = nuevoNivel;
+    }
+
+    // Devuelve el nivel actual de los embalses
+    float getEmbalses() {
+        return nivelEmbalses;
+    }
+
+    // Genera el precio de bolsa al azar dentro del rango real de XM para cada franja
+    float precioHora(int hora) {
+        int minimo, maximo;
+        // Franja 1: Madrugada (0 a 6 h) -> 398 a 640 COP/kWh
+        if (hora <= HORA_FIN_MADRUGADA) {
+            minimo = PRECIO_MIN_MADRUGADA;
+            maximo = PRECIO_MAX_MADRUGADA;
+        // Franja 2: Manana y mediodia (7 a 14 h) -> 456 a 970 COP/kWh
+        } else if (hora <= HORA_FIN_MANANA) {
+            minimo = PRECIO_MIN_MANANA;
+            maximo = PRECIO_MAX_MANANA;
+        // Franja 3: Tarde (15 a 17 h) -> 596 a 1040 COP/kWh
+        } else if (hora <= HORA_FIN_TARDE) {
+            minimo = PRECIO_MIN_TARDE;
+            maximo = PRECIO_MAX_TARDE;
+        // Franja 4: Hora pico (18 a 20 h) -> 705 a 1612 COP/kWh
+        } else if (hora <= PICO_FIN) {
+            minimo = PRECIO_MIN_PICO;
+            maximo = PRECIO_MAX_PICO;
+        // Franja 5: Noche (21 a 23 h) -> 565 a 970 COP/kWh
+        } else {
+            minimo = PRECIO_MIN_NOCHE;
+            maximo = PRECIO_MAX_NOCHE;
+        }
+        // Retorna un numero aleatorio entre minimo y maximo (incluidos)
+        return minimo + rand() % (maximo - minimo + 1);
+    }
+};
+
+// =============================================================
+// Clase principal Negocio: reune el Medidor (composicion), el Mercado (asociacion)
+// y las Cargas (agregacion), aplica la Regla 6 y simula las 24 horas
+// =============================================================
 
 int main() {
     return 0;
