@@ -93,6 +93,106 @@ const int PRECIO_MAX_NOCHE = 970;
 
 // =============================================================
 // Clase base abstracta Carga: lo que tienen en comun todas las cargas
+// =============================================================
+class Carga {
+// protected: estos atributos los ven esta clase y sus hijas (CargaCritica, CargaAplazable),
+// pero no el resto del programa
+protected:
+    // El nombre del equipo: "Nevera", "Horno", "Amasadora"
+    string nombre;
+    // La potencia electrica en kW
+    float potenciaKW;
+    // true si esta encendida en esta hora; false si esta apagada
+    bool encendida;
+    // Cuantas horas ha funcionado en el dia (para el resumen y horas minimas)
+    int horasUso;
+
+// public: lo que puede usar cualquier parte del programa
+public:
+    // Constructor: recibe el nombre (n) y la potencia en kW (p)
+    Carga(string n, float p) {
+        nombre = n;
+        potenciaKW = p;
+        encendida = false;
+        horasUso = 0;
+    }
+
+    // Destructor virtual: obligatorio en una clase base con metodos virtuales
+    virtual ~Carga() {}
+
+    // POLIMORFISMO: metodo virtual puro (= 0).
+    // Cada clase hija (CargaCritica y CargaAplazable) escribe su propia regla.
+    // Hace que Carga sea una clase ABSTRACTA (no se pueden crear objetos Carga directos).
+    virtual bool debeEncender(int hora, float precio, float embalses) = 0;
+
+    // Indica si la carga es aplazable (para que la Regla 6 sepa cuales puede apagar)
+    virtual bool esAplazable() {
+        return false;
+    }
+
+    // Devuelve las horas minimas diarias requeridas (0 para cargas criticas)
+    virtual int getHorasMinimas() {
+        return 0;
+    }
+
+    // Indica si la carga cumplio sus horas minimas del dia
+    virtual bool cumplioHorasMinimas() {
+        return true;
+    }
+
+    // Enciende la carga durante esta hora y suma 1 a las horas de uso
+    void encender() {
+        encendida = true;
+        horasUso++;
+    }
+
+    // Apaga la carga cuando la Regla 6 (tope de potencia contratada) la desconecta
+    // en esa misma hora, descontando la hora que se acababa de sumar en encender()
+    void apagarPorTope() {
+        if (encendida) {
+            encendida = false;
+            if (horasUso > 0) {
+                horasUso--;
+            }
+        }
+    }
+
+    // Apaga la carga normalmente al evaluar una nueva hora
+    void apagar() {
+        encendida = false;
+    }
+
+    // Reinicia el contador de horas y el estado al comenzar un nuevo dia
+    void reiniciarDia() {
+        encendida = false;
+        horasUso = 0;
+    }
+
+    // Costo de esta hora: potenciaKW x precio si esta encendida; 0 si esta apagada
+    float costoHora(float precio) {
+        if (encendida) {
+            return potenciaKW * precio;
+        }
+        return 0;
+    }
+
+    // Energia consumida en esta hora (en 1 hora, kWh = kW x 1 h)
+    float kwhHora() {
+        if (encendida) {
+            return potenciaKW;
+        }
+        return 0;
+    }
+
+    // Getters: permiten consultar los atributos protegidos sin modificarlos
+    string getNombre() { return nombre; }
+    float getPotencia() { return potenciaKW; }
+    bool estaEncendida() { return encendida; }
+    int getHorasUso() { return horasUso; }
+};
+
+// =============================================================
+// RELACION 1 (HERENCIA) y RELACION 2 (POLIMORFISMO):
 
 int main() {
     return 0;
