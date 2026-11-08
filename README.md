@@ -5,7 +5,7 @@
 ![Institución](https://img.shields.io/badge/Universidad-IU%20Digital%20de%20Antioquia-blue)
 ![Evaluación](https://img.shields.io/badge/Entrega-EA2%20(Tag%20ea2)-green)
 ![Ahorro](https://img.shields.io/badge/Ahorro%20Energ%C3%A9tico-63.6%25-brightgreen)
-[![Video de Sustentación](https://img.shields.io/badge/Video-Sustentaci%C3%B3n%20en%20Vivo%20(%E2%89%A4%205%20min)-red?logo=youtube&logoColor=white)](https://vdbcreator.com/WattControlPanaderia)
+[![Video de Sustentación](https://img.shields.io/badge/Video-Sustentaci%C3%B3n%20en%20Vivo%20(%E2%89%A4%205%20min)-red?logo=youtube&logoColor=white)](https://vdbcreator.com/screening/WattControlPanaderia)
 
 Sistema de gestión energética en C++ diseñado para la **Panadería El Trigo de Oro**, orientado a optimizar los costos de consumo eléctrico en el mercado de bolsa de XM (Colombia), garantizando el 100 % de las metas de producción de pan y protegiendo el negocio contra contingencias de sobrecarga y racionamiento por sequía (Fenómeno del Niño).
 
@@ -38,7 +38,7 @@ Sistema de gestión energética en C++ diseñado para la **Panadería El Trigo d
 
 En cumplimiento estricto de la rúbrica oficial de la **Evaluación de Aprendizaje 2 (EA2)**, el equipo presenta la sustentación completa del sistema con demostración interactiva en la terminal y explicación individual del código y las relaciones de POO:
 
-👉 **[Ver Video de Sustentación en vdbcreator.com](https://vdbcreator.com/WattControlPanaderia)** *(Acceso privado directo)*
+👉 **[Ver Video de Sustentación en vdbcreator.com](https://vdbcreator.com/screening/WattControlPanaderia)** *(Acceso privado directo)*
 
 ---
 
