@@ -24,9 +24,11 @@ Sistema de gestión energética en C++ diseñado para la **Panadería El Trigo d
 
 ## 🔗 Accesos Rápidos a Entregas (EA2 y EA3)
 
-- 📦 **[Ver código y README exacto de la EA2 (Tag `ea2`)](https://github.com/jorgerubio-better/wattcontrol-panaderia-equipo1/tree/ea2)**
-- 🎬 **[Ver Video de Sustentación EA2 en vdbcreator.com](https://vdbcreator.com/screening/WattControlPanaderia)**
 - 🚀 **[Ver entrega actual EA3 (Tag `ea3`)](https://github.com/jorgerubio-better/wattcontrol-panaderia-equipo1/tree/ea3)**
+- 🎬 **[Ver Video de Sustentación EA3 en vdbcreator.com](https://vdbcreator.com/screening/Act3WattControlPanaderia)**
+- 🔌 **[Ver Circuito Público en TinkerCad (Reto Extra +0,3)](https://www.tinkercad.com/things/9GOirWZ5FvB-circuito-tinkercad)**
+- 📦 **[Ver código y README exacto de la EA2 (Tag `ea2`)](https://github.com/jorgerubio-better/wattcontrol-panaderia-equipo1/tree/ea2)**
+- 🎥 **[Ver Video de Sustentación EA2 en vdbcreator.com](https://vdbcreator.com/screening/WattControlPanaderia)**
 
 ---
 
@@ -168,7 +170,8 @@ g++ -std=c++17 -Wall -Wextra wattcontrol.cpp -o wattcontrol
 
 ## 🔌 Reto Extra: TinkerCad Circuits (Arduino UNO)
 
-El código Arduino se encuentra en [`tinkercad/wattcontrol_arduino.ino`](tinkercad/wattcontrol_arduino.ino):
+- 👉 **Circuito público en vivo:** [https://www.tinkercad.com/things/9GOirWZ5FvB-circuito-tinkercad](https://www.tinkercad.com/things/9GOirWZ5FvB-circuito-tinkercad)
+- El código Arduino se encuentra en [`tinkercad/wattcontrol_arduino.ino`](tinkercad/wattcontrol_arduino.ino):
 - **Potenciómetro (`A0`):** simula el precio de bolsa XM entre `$350` y `$1.650 COP/kWh`.
 - **3 LEDs (pines `13`, `12`, `11`):** representan la `Nevera` (crítica, siempre ON), el `Horno` (`7.0 kW`) y la `Amasadora` (`2.2 kW`).
 - **Monitor Serial:** imprime hora, precio XM, estado de cada carga, kW totales y costo por hora aplicando las reglas y el tope de `9.0 kW` (Regla 6).

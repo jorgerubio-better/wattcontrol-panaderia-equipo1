@@ -1,5 +1,7 @@
 # 🔌 Guía de Montaje en TinkerCad Circuits (Reto Extra EA3)
 
+- 👉 **Enlace público del circuito:** [https://www.tinkercad.com/things/9GOirWZ5FvB-circuito-tinkercad](https://www.tinkercad.com/things/9GOirWZ5FvB-circuito-tinkercad)
+
 1. Abrir **TinkerCad Circuits** y crear un nuevo circuito.
 2. Agregar un **Arduino UNO R3**, una **Protoboard**, **1 Potenciómetro**, **3 LEDs** (verde, amarillo, rojo) y **3 resistencias de 220 Ω**.
 3. Conectar el **Potenciómetro**:
