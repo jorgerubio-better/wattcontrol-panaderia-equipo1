@@ -896,6 +896,87 @@ public:
         cout << "  Ahorro obtenido:    $" << setprecision(0) << ahorroPesos << " COP ("
              << setprecision(1) << ahorroPorcentaje << " %)" << endl;
     }
+
+    // Opcion 5 (EA3): Simula la semana real completa (21 al 27 de septiembre de 2026)
+    // recorriendo la matriz PRECIOS[7][24] con dos ciclos for anidados
+    void simularSemana() {
+        medidor.reiniciar();
+        for (int i = 0; i < numCargas; i++) {
+            diasCumplidos[i] = 0;
+        }
+        semanaSimulada = true;
+
+        float embalses = mercado->getEmbalses();
+        float potenciaTotalSinGestor = 0;
+        for (int i = 0; i < numCargas; i++) {
+            potenciaTotalSinGestor += cargas[i]->getPotencia();
+        }
+
+        // Dos for anidados: 7 dias x 24 horas
+        for (int d = 0; d < DIAS_SEMANA; d++) {
+            for (int i = 0; i < numCargas; i++) {
+                cargas[i]->reiniciarDia();
+            }
+
+            for (int h = 0; h < HORAS_DIA; h++) {
+                float precioActual = mercado->precio(d, h);
+                costosSinGestor[d][h] = costo(potenciaTotalSinGestor, precioActual);
+
+                // Si ocurre emergencia de racionamiento (precio > 1500 y embalses < 40 %),
+                // solo opera la carga critica en esa hora
+                if (precioActual > PRECIO_EMERGENCIA && embalses < EMBALSES_ALERTA) {
+                    float kwhEmergencia = 0;
+                    float costoEmergencia = 0;
+                    for (int i = 0; i < numCargas; i++) {
+                        if (!cargas[i]->esAplazable()) {
+                            cargas[i]->encender();
+                            kwhEmergencia += cargas[i]->kwhHora();
+                            costoEmergencia += costo(cargas[i]->kwhHora(), precioActual);
+                        } else {
+                            cargas[i]->apagar();
+                        }
+                    }
+                    costos[d][h] = costoEmergencia;
+                    medidor.registrarHora(kwhEmergencia, costoEmergencia);
+                    continue;
+                }
+
+                // Polimorfismo: cada carga decide si enciende segun reglas de la Evidencia 2
+                for (int i = 0; i < numCargas; i++) {
+                    if (cargas[i]->debeEncender(h, precioActual, embalses)) {
+                        cargas[i]->encender();
+                    } else {
+                        cargas[i]->apagar();
+                    }
+                }
+
+                // Regla 6: tope de potencia contratada (9.0 kW)
+                aplicarReglaPotenciaContratada(false);
+
+                // Acumula kWh y costo con la funcion sobrecargada costo(kW, precio)
+                float kwhHoraCon = 0;
+                float costoHoraCon = 0;
+                for (int i = 0; i < numCargas; i++) {
+                    float kwhCarga = cargas[i]->kwhHora();
+                    kwhHoraCon += kwhCarga;
+                    costoHoraCon += costo(kwhCarga, precioActual);
+                }
+                costos[d][h] = costoHoraCon;
+                medidor.registrarHora(kwhHoraCon, costoHoraCon);
+            }
+
+            // Verifica al final del dia d que cargas aplazables cumplieron su minimo diario
+            for (int i = 0; i < numCargas; i++) {
+                if (cargas[i]->esAplazable() && cargas[i]->cumplioHorasMinimas()) {
+                    diasCumplidos[i]++;
+                }
+            }
+        }
+
+        cout << endl << "[OK] Semana real simulada correctamente (21 al 27 de septiembre de 2026)." << endl;
+        mostrarReporteSemanal();
+    }
+
 };
 
 // =============================================================
