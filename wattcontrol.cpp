@@ -1057,8 +1057,6 @@ public:
     }
 };
 
-};
-
 // =============================================================
 // Funcion principal main(): crea los objetos, conecta las relaciones y ejecuta el menu
 // =============================================================
@@ -1074,9 +1072,16 @@ int main() {
     CargaAplazable horno("Horno electrico", POTENCIA_HORNO, HORAS_MIN_HORNO, HORAS_TURNO_HORNO);
     CargaAplazable amasadora("Amasadora", POTENCIA_AMASADORA, HORAS_MIN_AMASADORA, HORAS_TURNO_AMASADORA);
 
+    // Registro inicial validado con funciones de string (empty, length/size, at)
+    linea(61, '=');
+    cout << "  BIENVENIDO A WATTCONTROL - CONFIGURACION DEL NEGOCIO" << endl;
+    linea(61, '=');
+    string nombreNegocio = pedirTexto("Nombre del negocio", "Panaderia El Trigo de Oro");
+    string nombreResponsable = pedirTexto("Nombre del responsable", "Jorge Rubio");
+
     // Se crea el Negocio pasandole la direccion del Mercado (&mercado -> Asociacion)
     // Internamente el Negocio construye su propio Medidor (Composicion)
-    Negocio panaderia("Panaderia El Trigo de Oro", &mercado);
+    Negocio panaderia(nombreNegocio, nombreResponsable, &mercado);
 
     // Se agregan las direcciones de las cargas al Negocio (&nevera, &horno, &amasadora -> Agregacion)
     panaderia.agregarCarga(&nevera);
@@ -1098,7 +1103,9 @@ int main() {
         cout << "1. Ingresar lectura manual (hora, precio, embalses)" << endl;
         cout << "2. Evaluar decision de cada carga" << endl;
         cout << "3. Simular un dia completo (24 h)" << endl;
-        cout << "4. Ver resumen de la ultima simulacion" << endl;
+        cout << "4. Ver resumen del ultimo dia simulado" << endl;
+        cout << "5. Simular la semana real (21 al 27 de sept. 2026)" << endl;
+        cout << "6. Ver reporte semanal completo" << endl;
         cout << "0. Salir" << endl;
         cout << "Opcion: ";
         cin >> opcion;
@@ -1151,14 +1158,24 @@ int main() {
             panaderia.mostrarResumen();
             break;
 
+        // Opcion 5: Simular la semana real completa (matriz 7x24)
+        case 5:
+            panaderia.simularSemana();
+            break;
+
+        // Opcion 6: Mostrar el reporte semanal completo
+        case 6:
+            panaderia.mostrarReporteSemanal();
+            break;
+
         // Opcion 0: Salir del programa
         case 0:
             cout << "Gracias por usar WattControl. Hasta pronto." << endl;
             break;
 
-        // default: cualquier opcion fuera del rango 0 a 4
+        // default: cualquier opcion fuera del rango 0 a 6
         default:
-            cout << "Opcion invalida. Por favor elija un numero entre 0 y 4." << endl;
+            cout << "Opcion invalida. Por favor elija un numero entre 0 y 6." << endl;
             break;
         }
     } while (opcion != 0);
