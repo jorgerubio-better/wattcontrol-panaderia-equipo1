@@ -1,5 +1,5 @@
 // =============================================================
-// WattControl v1 - Gestor de energia de una Panaderia (El Nino 2026)
+// WattControl v2 (EA3) - Gestor de energia de una Panaderia (El Nino 2026)
 // Curso: Programacion Orientada a Objetos - IU Digital de Antioquia
 // Docente: Carlos Arturo Castro Castro
 // Equipo:
@@ -14,9 +14,11 @@
 #include <iostream>
 // iomanip: setw (ancho de columna) y setprecision (cantidad de decimales)
 #include <iomanip>
-// string: el tipo string, para guardar textos
+// string: el tipo string y sus funciones (empty, length, size, at)
 #include <string>
-// cstdlib: rand() y srand(), para generar numeros al azar
+// cctype: isupper() para validar que la primera letra sea mayuscula
+#include <cctype>
+// cstdlib: rand() y srand(), para simulacion diaria puntual
 #include <cstdlib>
 
 // Permite escribir cout en vez de std::cout (todo lo de la libreria esta en "std")
@@ -25,8 +27,10 @@ using namespace std;
 // --- Directivas del preprocesador ------------------------------------------
 // Antes de compilar, el preprocesador cambia cada nombre por su valor en todo el archivo.
 // No llevan = ni ; al final.
-// Horas de la simulacion: un dia completo
+// Horas de la simulacion: un dia completo (columnas de la matriz)
 #define HORAS_DIA 24
+// Dias de la semana real: lunes a domingo (filas de la matriz)
+#define DIAS_SEMANA 7
 // Cuantas cargas puede tener el negocio como maximo (tamano del arreglo en Negocio)
 #define MAX_CARGAS 3
 // Semilla de rand(): con la misma semilla, todos obtienen los mismos precios al azar
@@ -34,6 +38,17 @@ using namespace std;
 
 // --- Constantes: todos los valores del negocio (Panaderia, digitos 0-1) ----
 // const = no se pueden cambiar despues. Si cambia un valor, se cambia solo aqui.
+// Semanas por mes para proyectar el ahorro mensual
+const int SEMANAS_MES = 4;
+// Longitud minima exigida para el nombre del negocio y del responsable
+const int LONGITUD_MIN_TEXTO = 3;
+// Nombres de los dias de la semana real (21 al 27 de septiembre de 2026)
+const string DIAS[DIAS_SEMANA] = {
+    "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"
+};
+const string FECHAS_SEMANA[DIAS_SEMANA] = {
+    "21/09", "22/09", "23/09", "24/09", "25/09", "26/09", "27/09"
+};
 // Potencia en kW de la carga critica: Nevera de insumos (funciona 24 h)
 const float POTENCIA_NEVERA = 1.2;
 // Potencia en kW de la carga aplazable 1: Horno electrico
