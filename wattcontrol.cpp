@@ -504,8 +504,9 @@ public:
 // =============================================================
 class Negocio {
 private:
-    // Nombre del negocio
+    // Nombre del negocio y del responsable (validados con funciones de string)
     string nombre;
+    string responsable;
     // COMPOSICION: el Medidor es un atributo por valor; nace y muere con el Negocio
     Medidor medidor;
     // AGREGACION: arreglo de punteros a Carga. Las cargas se crean en main() y se agregan aqui
@@ -515,7 +516,7 @@ private:
     // ASOCIACION: puntero al Mercado. El Negocio no es dueno del Mercado, solo le pide datos
     Mercado* mercado;
 
-    // Resultados guardados de la ultima simulacion para mostrarlos en la Opcion 4
+    // Resultados guardados de la ultima simulacion diaria (Opcion 3 y 4)
     float costoSinGestor;
     float kwhSinGestor;
     int horasSimuladas;
@@ -523,10 +524,17 @@ private:
     bool huboEmergencia;
     bool simulacionRealizada;
 
+    // Matrices y contadores de la simulacion semanal real (EA3 - Opcion 5 y 6)
+    float costos[DIAS_SEMANA][HORAS_DIA];
+    float costosSinGestor[DIAS_SEMANA][HORAS_DIA];
+    int diasCumplidos[MAX_CARGAS];
+    bool semanaSimulada;
+
 public:
-    // Constructor: recibe el nombre del negocio y la direccion del Mercado (Mercado* m)
-    Negocio(string n, Mercado* m) : medidor() {
+    // Constructor: recibe nombre del negocio, responsable y direccion del Mercado (Mercado* m)
+    Negocio(string n, string resp, Mercado* m) : medidor() {
         nombre = n;
+        responsable = resp;
         mercado = m;
         numCargas = 0;
         costoSinGestor = 0;
@@ -535,6 +543,16 @@ public:
         fallasLectura = 0;
         huboEmergencia = false;
         simulacionRealizada = false;
+        semanaSimulada = false;
+        for (int i = 0; i < MAX_CARGAS; i++) {
+            diasCumplidos[i] = 0;
+        }
+        for (int d = 0; d < DIAS_SEMANA; d++) {
+            for (int h = 0; h < HORAS_DIA; h++) {
+                costos[d][h] = 0;
+                costosSinGestor[d][h] = 0;
+            }
+        }
     }
 
     // AGREGACION: agrega la direccion de una carga creada afuera (Carga* c)
@@ -547,8 +565,9 @@ public:
 
     // Muestra la configuracion general del negocio y sus cargas registradas
     void mostrarConfiguracion() {
-        cout << "=============================================================" << endl;
-        cout << "Negocio: " << nombre << " (Ultimo digito doc: 0-1)" << endl;
+        linea(61, '=');
+        cout << "Negocio:     " << nombre << " (Ultimo digito doc: 0-1)" << endl;
+        cout << "Responsable: " << responsable << endl;
         cout << "Potencia contratada: " << POTENCIA_CONTRATADA << " kW | Precio caro: > $"
              << PRECIO_CARO << " COP/kWh" << endl;
         cout << "Alerta de embalses (El Nino): < " << EMBALSES_ALERTA
