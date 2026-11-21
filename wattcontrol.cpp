@@ -461,6 +461,14 @@ public:
         return nivelEmbalses;
     }
 
+    // Devuelve el precio real (COP/kWh) de la matriz PRECIOS[7][24] para un dia y hora
+    float precio(int dia, int hora) {
+        if (dia < 0 || dia >= DIAS_SEMANA || hora < 0 || hora >= HORAS_DIA) {
+            return 0;
+        }
+        return PRECIOS[dia][hora];
+    }
+
     // Genera el precio de bolsa al azar dentro del rango real de XM para cada franja
     float precioHora(int hora) {
         int minimo, maximo;
