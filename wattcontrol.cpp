@@ -107,6 +107,81 @@ const int PRECIO_MIN_NOCHE = 565;
 const int PRECIO_MAX_NOCHE = 970;
 
 // =============================================================
+// FUNCIONES PROPIAS, SOBRECARGA Y VALIDACION DE STRINGS (EA3)
+// =============================================================
+
+// SOBRECARGA 1: calcula el costo de una hora a partir de la potencia (kW) y el precio
+float costo(float kW, float precio) {
+    return kW * precio;
+}
+
+// SOBRECARGA 2: suma el costo de varias horas almacenadas en un arreglo
+float costo(const float costos[], int n) {
+    float total = 0;
+    for (int i = 0; i < n; i++) {
+        total += costos[i];
+    }
+    return total;
+}
+
+// Funcion propia 1: suma el costo total de la semana a partir de los totales diarios
+float costoSemana(const float totalesDia[], int n) {
+    return costo(totalesDia, n);
+}
+
+// Funcion propia 2: calcula el promedio de un arreglo de decimales
+float promedio(const float datos[], int n) {
+    if (n <= 0) {
+        return 0;
+    }
+    return costo(datos, n) / n;
+}
+
+// Funcion propia 3: retorna el indice (0 a n-1) del dia con mayor costo
+int diaMasCaro(const float totalesDia[], int n) {
+    int indiceMax = 0;
+    for (int i = 1; i < n; i++) {
+        if (totalesDia[i] > totalesDia[indiceMax]) {
+            indiceMax = i;
+        }
+    }
+    return indiceMax;
+}
+
+// Funcion propia 4: busca la hora mas cara de la matriz semanal y devuelve su costo;
+// deja en diaMax y horaMax la fila (dia) y columna (hora) donde ocurrio
+float horaMasCara(const float costos[][HORAS_DIA], int dias, int &diaMax, int &horaMax) {
+    diaMax = 0;
+    horaMax = 0;
+    float maximo = costos[0][0];
+    for (int d = 0; d < dias; d++) {
+        for (int h = 0; h < HORAS_DIA; h++) {
+            if (costos[d][h] > maximo) {
+                maximo = costos[d][h];
+                diaMax = d;
+                horaMax = h;
+            }
+        }
+    }
+    return maximo;
+}
+
+// SOBRECARGA adicional para formato de tablas: linea de guiones o de caracter elegido
+void linea(int largo) {
+    for (int i = 0; i < largo; i++) {
+        cout << '-';
+    }
+    cout << endl;
+}
+
+void linea(int largo, char caracter) {
+    for (int i = 0; i < largo; i++) {
+        cout << caracter;
+    }
+    cout << endl;
+}
+
+// =============================================================
 // Clase base abstracta Carga: lo que tienen en comun todas las cargas
 // =============================================================
 class Carga {
