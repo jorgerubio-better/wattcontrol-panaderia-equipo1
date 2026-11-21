@@ -1,13 +1,12 @@
-# 🥖 WattControl: Gestor Inteligente de Energía para Panadería
+# 🥖 WattControl: Gestor Inteligente de Energía para Panadería (EA3)
 
 ![C++](https://img.shields.io/badge/Lenguaje-C%2B%2B17-00599C?logo=c%2B%2B&logoColor=white)
 ![Paradigma](https://img.shields.io/badge/Paradigma-POO%20(5%20Relaciones)-orange)
 ![Institución](https://img.shields.io/badge/Universidad-IU%20Digital%20de%20Antioquia-blue)
-![Evaluación](https://img.shields.io/badge/Entrega-EA2%20(Tag%20ea2)-green)
-![Ahorro](https://img.shields.io/badge/Ahorro%20Energ%C3%A9tico-63.6%25-brightgreen)
-[![Video de Sustentación](https://img.shields.io/badge/Video-Sustentaci%C3%B3n%20en%20Vivo%20(%E2%89%A4%205%20min)-red?logo=youtube&logoColor=white)](https://vdbcreator.com/screening/WattControlPanaderia)
+![Evaluación](https://img.shields.io/badge/Entrega-EA3%20(Tag%20ea3)-green)
+![Ahorro](https://img.shields.io/badge/Ahorro%20Semanal-62.0%25-brightgreen)
 
-Sistema de gestión energética en C++ diseñado para la **Panadería El Trigo de Oro**, orientado a optimizar los costos de consumo eléctrico en el mercado de bolsa de XM (Colombia), garantizando el 100 % de las metas de producción de pan y protegiendo el negocio contra contingencias de sobrecarga y racionamiento por sequía (Fenómeno del Niño).
+Sistema de gestión energética en C++ diseñado para la **Panadería El Trigo de Oro**, ampliado en la **Evidencia de Aprendizaje 3 (EA3)** con simulación de una semana real (21 al 27 de septiembre de 2026) mediante matrices `[7][24]`, funciones propias y sobrecargadas, validación de textos con `string`, reporte semanal completo y prototipo en Arduino (TinkerCad Circuits).
 
 ---
 
@@ -17,98 +16,159 @@ Sistema de gestión energética en C++ diseñado para la **Panadería El Trigo d
 - **Facultad:** Facultad de Ingeniería · Ingeniería de Software
 - **Asignatura:** Programación Orientada a Objetos (`PREICA2602B020043`)
 - **Docente:** Prof. Carlos Arturo Castro Castro
-- **Evaluación:** Evaluación de Aprendizaje 2 (EA2)
+- **Evaluación:** Evidencia de Aprendizaje 3 (EA3)
 - **Negocio Asignado:** **Panadería** (Último dígito de documento: `0 – 1`)
-- **Repositorio:** `wattcontrol-panaderia-equipo1` (Etiqueta oficial: `ea2`)
+- **Repositorio:** `wattcontrol-panaderia-equipo1` (Etiqueta oficial: `ea3`)
 
 ---
 
 ## 👥 Equipo de Desarrollo (Equipo 1)
 
-| Integrante | Usuario GitHub | Rama de Trabajo | Aportes Técnicos y Relaciones POO Sustentadas |
-| :--- | :---: | :--- | :--- |
-| **Jorge Alejandro Rubio Giraldo** *(Creador del repo)* | [`@jorgerubio-better`](https://github.com/jorgerubio-better) | `feature/clases-carga-herencia` | Directivas `#define`, constantes `const` sin números mágicos, diseño de la clase base abstracta `Carga` (`virtual debeEncender = 0`) e implementación de `CargaCritica` y `CargaAplazable` (**Herencia** y **Polimorfismo**). |
-| **Luisa Fernanda Parra Arboleda** | [`@luisaparra25`](https://github.com/luisaparra25) | `feature/medidor-y-mercado` | Implementación de la clase `Medidor` (**Composición** por valor en `Negocio`) y de la clase `Mercado` (**Asociación** mediante puntero `Mercado*`) con generación estocástica de precios XM por franja horaria. |
-| **Maribel Román Ospina** | [`@mariospina03-wq`](https://github.com/mariospina03-wq) | `feature/negocio-y-simulacion` | Clase `Negocio` con arreglo polimórfico de punteros `Carga*` (**Agregación**), Regla 6 de potencia contratada (tope 9,0 kW) y simulación de 24 horas con ciclo `for`, `continue` por falla de lectura y `break` por emergencia. |
-| **Deivis Alfonso Yancé Rosado** | [`@deivisJVC`](https://github.com/deivisJVC) | `feature/resumen-y-menu` | Método `mostrarResumen()` con balance de ahorro (63,6 %), alerta de producción incompleta, función `main()` integradora y menú interactivo `do-while`/`switch` con validaciones de entrada. |
+| Integrante | Usuario GitHub | Aportes Técnicos en EA3 |
+| :--- | :---: | :--- |
+| **Jorge Alejandro Rubio Giraldo** *(Creador del repo)* | [`@jorgerubio-better`](https://github.com/jorgerubio-better) | Constantes de semana real (`DIAS_SEMANA`, `SEMANAS_MES`, `DIAS[]`), funciones propias (`promedio`, `diaMasCaro`, `horaMasCara`, `costoSemana`), sobrecarga (`costo()`, `linea()`), diagrama UML actualizado y documentación. |
+| **Luisa Fernanda Parra Arboleda** | [`@luisaparra25`](https://github.com/luisaparra25) | Matriz `PRECIOS[7][24]` en `Mercado` (21 al 27 de sept. de 2026), método `precio(int dia, int hora)` sin `rand()` y validación de textos (`empty()`, `length()`, `size()`, `at()`, `isupper()`). |
+| **Maribel Román Ospina** | [`@mariospina03-wq`](https://github.com/mariospina03-wq) | Matriz `costos[7][24]` y contadores `diasCumplidos[]` en `Negocio`, método `simularSemana()` con ciclos `for` anidados (`7 x 24`), polimorfismo, Regla 6 e integración en el menú (opciones 5 y 6). |
+| **Deivis Alfonso Yancé Rosado** | [`@deivisJVC`](https://github.com/deivisJVC) | Método `mostrarReporteSemanal()` con tabla diaria, día y hora más caros, proyección mensual (`x 4`), cumplimiento de horas mínimas y código Arduino para reto extra en TinkerCad. |
 
 ---
 
-## 🎬 Video de Sustentación y Demostración en Vivo
+## 🏗️ Diagrama de Clases Actualizado (EA3)
 
-En cumplimiento estricto de la rúbrica oficial de la **Evaluación de Aprendizaje 2 (EA2)**, el equipo presenta la sustentación completa del sistema con demostración interactiva en la terminal y explicación individual del código y las relaciones de POO:
+Mantiene las **5 relaciones de POO** e incorpora las matrices `[7][24]`, los nuevos métodos y las funciones propias/sobrecargadas:
 
-👉 **[Ver Video de Sustentación en vdbcreator.com](https://vdbcreator.com/screening/WattControlPanaderia)** *(Acceso privado directo)*
+```mermaid
+classDiagram
+    class Carga {
+        <<abstract>>
+        #string nombre
+        #float potenciaKW
+        #bool encendida
+        #int horasUso
+        +debeEncender(hora, precio, embalses)* bool
+        +esAplazable() bool
+        +getHorasMinimas() int
+        +cumplioHorasMinimas() bool
+        +costoHora(precio) float
+        +kwhHora() float
+    }
+
+    class CargaCritica {
+        +debeEncender(hora, precio, embalses) bool
+    }
+
+    class CargaAplazable {
+        -int horasMinimas
+        -int horasTurnoMax
+        +debeEncender(hora, precio, embalses) bool
+        +esAplazable() bool
+        +getHorasMinimas() int
+        +cumplioHorasMinimas() bool
+    }
+
+    class Medidor {
+        -float kWhAcumulados
+        -float costoAcumulado
+        +reiniciar() void
+        +registrarHora(kwh, costo) void
+        +getKWh() float
+        +getCosto() float
+    }
+
+    class Mercado {
+        -float nivelEmbalses
+        -float PRECIOS[7][24]
+        +setEmbalses(nuevoNivel) void
+        +getEmbalses() float
+        +precio(dia, hora) float
+        +precioHora(hora) float
+    }
+
+    class Negocio {
+        -string nombre
+        -string responsable
+        -Medidor medidor
+        -Carga* cargas[3]
+        -Mercado* mercado
+        -float costos[7][24]
+        -float costosSinGestor[7][24]
+        -int diasCumplidos[3]
+        +agregarCarga(Carga*) void
+        +simularDia() void
+        +mostrarResumen() void
+        +simularSemana() void
+        +mostrarReporteSemanal() void
+    }
+
+    class FuncionesUtilidad {
+        <<funciones libres y sobrecarga>>
+        +costo(kW, precio) float
+        +costo(costos[], n) float
+        +costoSemana(totalesDia[], n) float
+        +promedio(datos[], n) float
+        +diaMasCaro(totalesDia[], n) int
+        +horaMasCara(costos[][24], dias, &diaMax, &horaMax) float
+        +linea(largo) void
+        +linea(largo, caracter) void
+        +problemaTexto(texto) string
+        +pedirTexto(etiqueta, ejemplo) string
+    }
+
+    Carga <|-- CargaCritica : Herencia + Polimorfismo
+    Carga <|-- CargaAplazable : Herencia + Polimorfismo
+    Negocio *-- Medidor : Composicion
+    Negocio o-- Carga : Agregacion
+    Negocio --> Mercado : Asociacion
+    Negocio ..> FuncionesUtilidad : Usa
+```
 
 ---
 
-## 🥐 Escenario del Negocio y Parámetros Operativos
+## 📊 Resultados de la Semana Real (21 al 27 de septiembre de 2026)
 
-En cumplimiento con los dígitos asignados (`0 – 1`), el sistema modela los requerimientos operativos de la **Panadería El Trigo de Oro**:
+Resultados obtenidos ejecutando la **Opción 5 (Simular la semana real)** con embalses al `65.0 %`:
 
-- **Potencia Máxima Contratada:** `9.0 kW` (Regla 6).
-- **Umbral de Tarifa Cara:** `> $800 COP/kWh` (Regla 4).
-- **Hora Pico Nacional:** `18:00 a 20:00 h` (Regla 3).
-- **Alerta Fenómeno del Niño:** Nivel de embalses `< 40.0 %` (Regla 2).
-- **Emergencia de Racionamiento:** Precio `> $1500 COP/kWh` **y** embalses `< 40.0 %` (Corte preventivo con sentencia `break`).
+| Día (Fecha) | Con Gestor (COP) | Sin Gestor (COP) | Ahorro del Día (COP) |
+| :--- | :---: | :---: | :---: |
+| Lunes (21/09) | $70.546 | $179.764 | $109.218 |
+| Martes (22/09) | $71.415 | $184.184 | $112.769 |
+| Miércoles (23/09) | $72.151 | $189.935 | $117.784 |
+| Jueves (24/09) | $62.689 | $196.196 | $133.507 |
+| Viernes (25/09) | $72.490 | $187.148 | $114.658 |
+| Sábado (26/09) | $66.765 | $167.003 | $100.238 |
+| Domingo (27/09) | $63.881 | $159.640 | $95.759 |
+| **TOTAL SEMANAL** | **$479.937** | **$1.263.870** | **$783.933 (62.0 %)** |
 
-### Cargas Eléctricas Modeladas:
-1. **Nevera de Insumos (`1.2 kW`):** `CargaCritica`. Almacena levaduras, lácteos y materias primas perecederas. Opera **24 horas continuas** (Regla 1).
-2. **Horno Eléctrico Rotativo (`7.0 kW`):** `CargaAplazable 1`. Requiere mínimo **6 horas diarias** de cocción para cumplir las metas de despacho.
-3. **Amasadora Industrial (`2.2 kW`):** `CargaAplazable 2`. Requiere mínimo **4 horas diarias** en la madrugada para preparación de lotes de masa.
-
----
-
-## 🏗️ Arquitectura de Software: Las 5 Relaciones de POO
-
-El sistema implementa de forma explícita las 5 relaciones canónicas de la Programación Orientada a Objetos:
-
-1. **Herencia:** `CargaCritica : public Carga` y `CargaAplazable : public Carga`.
-2. **Polimorfismo:** Sobrescritura (`override`) del método virtual puro `virtual bool debeEncender(int hora, float precio, float embalses) = 0;` con resolución dinámica en tiempo de ejecución.
-3. **Composición:** El objeto `Medidor medidor;` es un atributo por valor dentro de `Negocio`; nace y muere junto con la instancia de la panadería.
-4. **Asociación:** El atributo `Mercado* mercado;` dentro de `Negocio` vincula el mercado eléctrico nacional como una entidad externa mediante puntero.
-5. **Agregación:** El arreglo `Carga* cargas[MAX_CARGAS];` almacena punteros a cargas que se instancian en `main()` y se incorporan al negocio con `agregarCarga()`.
+- **Día más caro (con gestor):** Viernes (25/09) — `$72.490 COP`
+- **Hora más cara de la semana:** Miércoles (23/09) a las `10:00 h` — `$6.519 COP` (Bolsa XM: `$795 COP/kWh`)
+- **Promedio diario (con gestor):** `$68.562 COP/día`
+- **Proyección de ahorro mensual (`× 4`):** `$3.135.732 COP/mes`
+- **Cumplimiento de horas mínimas:**
+  - `Horno eléctrico`: **7 de 7 días** cumplidos (mínimo `6 h/día`)
+  - `Amasadora`: **7 de 7 días** cumplidos (mínimo `4 h/día`)
 
 ---
 
 ## 🚀 Compilación y Ejecución
 
-El código fuente está contenido en un único archivo modular `wattcontrol.cpp` sin dependencias externas, compatible con el estándar C++17 o superior.
-
-### En Linux / macOS:
 ```bash
-# Compilación con banderas de optimización y advertencias estrictas
-clang++ -std=c++17 -Wall -Wextra wattcontrol.cpp -o wattcontrol
-
-# Ejecución
+g++ -std=c++17 -Wall -Wextra wattcontrol.cpp -o wattcontrol
 ./wattcontrol
-```
-
-### En Windows (MinGW / GCC):
-```cmd
-g++ -std=c++17 -Wall -Wextra wattcontrol.cpp -o wattcontrol.exe
-wattcontrol.exe
 ```
 
 ---
 
-## 📊 Resultados de la Simulación (Día Normal vs. Sin Gestor)
+## 🔌 Reto Extra: TinkerCad Circuits (Arduino UNO)
 
-| Métrica | Sin Gestor (Operación Ciega) | Con WattControl (Optimizado) | Impacto / Ahorro |
-| :--- | :---: | :---: | :---: |
-| **Nevera de Insumos** | 24 h (28.8 kWh) | 24 h (28.8 kWh) | 100 % operativa (Crítica) |
-| **Horno Eléctrico** | 24 h (168.0 kWh) | 10 h (70.0 kWh) | Meta diaria $\ge$ 6 h **Cumplida** |
-| **Amasadora Industrial** | 24 h (52.8 kWh) | 4 h (8.8 kWh) | Meta diaria $\ge$ 4 h **Cumplida** |
-| **Consumo Diario** | **249.6 kWh** | **107.6 kWh** | **- 56,9 % kWh** |
-| **Costo Diario** | **$185.754 COP** | **$67.695 COP** | **Ahorro de $118.059 COP/día** |
-| **Porcentaje de Ahorro** | Base de comparación | **63,6 % de ahorro** | **$3.541.770 COP / mes** |
+El código Arduino se encuentra en [`tinkercad/wattcontrol_arduino.ino`](tinkercad/wattcontrol_arduino.ino):
+- **Potenciómetro (`A0`):** simula el precio de bolsa XM entre `$350` y `$1.650 COP/kWh`.
+- **3 LEDs (pines `13`, `12`, `11`):** representan la `Nevera` (crítica, siempre ON), el `Horno` (`7.0 kW`) y la `Amasadora` (`2.2 kW`).
+- **Monitor Serial:** imprime hora, precio XM, estado de cada carga, kW totales y costo por hora aplicando las reglas y el tope de `9.0 kW` (Regla 6).
 
 ---
 
 ## 🏷️ Etiqueta de Entrega (Git Tag)
 
-El repositorio cuenta con la etiqueta de versión obligatoria:
 ```bash
-git checkout ea2
+git checkout ea3
 ```
-Esta etiqueta apunta al commit donde se integraron las 4 ramas `feature/...` con sus 12 commits de equipo.
