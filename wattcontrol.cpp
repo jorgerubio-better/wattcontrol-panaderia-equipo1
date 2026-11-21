@@ -181,6 +181,36 @@ void linea(int largo, char caracter) {
     cout << endl;
 }
 
+// VALIDACION CON STRING: revisa que el texto no este vacio, tenga minimo 3 letras
+// y empiece con letra mayuscula usando empty(), length(), size() y at()
+string problemaTexto(string texto) {
+    if (texto.empty()) {
+        return "no puede estar vacio";
+    }
+    if ((int)texto.length() < LONGITUD_MIN_TEXTO || (int)texto.size() < LONGITUD_MIN_TEXTO) {
+        return "debe tener al menos 3 caracteres";
+    }
+    if (!isupper((unsigned char)texto.at(0))) {
+        return "debe iniciar con letra mayuscula";
+    }
+    return "";
+}
+
+// Pide un texto por consola con getline() hasta que pase problemaTexto()
+string pedirTexto(string etiqueta, string ejemplo) {
+    string texto;
+    string problema;
+    do {
+        cout << etiqueta << " (ej. " << ejemplo << "): ";
+        getline(cin, texto);
+        problema = problemaTexto(texto);
+        if (problema != "") {
+            cout << "  Error: el texto " << problema << "." << endl;
+        }
+    } while (problema != "");
+    return texto;
+}
+
 // =============================================================
 // Clase base abstracta Carga: lo que tienen en comun todas las cargas
 // =============================================================
