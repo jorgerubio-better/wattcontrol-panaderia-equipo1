@@ -977,6 +977,86 @@ public:
         mostrarReporteSemanal();
     }
 
+    // Opcion 6 (EA3): Muestra el reporte semanal completo para el dueno del negocio
+    void mostrarReporteSemanal() {
+        if (!semanaSimulada) {
+            cout << "Aun no se ha simulado la semana real. Use primero la Opcion 5." << endl;
+            return;
+        }
+
+        float totalesDiaCon[DIAS_SEMANA];
+        float totalesDiaSin[DIAS_SEMANA];
+        for (int d = 0; d < DIAS_SEMANA; d++) {
+            // Usa la funcion sobrecargada costo(arreglo[], n) sobre cada fila de la matriz
+            totalesDiaCon[d] = costo(costos[d], HORAS_DIA);
+            totalesDiaSin[d] = costo(costosSinGestor[d], HORAS_DIA);
+        }
+
+        float totalCon = costoSemana(totalesDiaCon, DIAS_SEMANA);
+        float totalSin = costoSemana(totalesDiaSin, DIAS_SEMANA);
+        float promedioDiario = promedio(totalesDiaCon, DIAS_SEMANA);
+        float ahorroSemanal = totalSin - totalCon;
+        float ahorroMensual = ahorroSemanal * SEMANAS_MES;
+        float porcentajeAhorro = (totalSin > 0) ? (ahorroSemanal / totalSin) * 100.0f : 0.0f;
+
+        int idxDiaCaro = diaMasCaro(totalesDiaCon, DIAS_SEMANA);
+        int diaHoraCara = 0;
+        int horaHoraCara = 0;
+        float valorHoraCara = horaMasCara(costos, DIAS_SEMANA, diaHoraCara, horaHoraCara);
+
+        cout << endl;
+        linea(72, '=');
+        cout << "  REPORTE SEMANAL WATTCONTROL (21 al 27 de septiembre de 2026)" << endl;
+        cout << "  Negocio: " << nombre << " | Responsable: " << responsable << endl;
+        cout << "  Embalses: " << fixed << setprecision(1) << mercado->getEmbalses() << " %" << endl;
+        linea(72, '=');
+
+        cout << fixed << setprecision(0);
+        cout << left << setw(18) << "Dia (Fecha)"
+             << right << setw(16) << "Con Gestor"
+             << setw(18) << "Sin Gestor"
+             << setw(18) << "Ahorro Dia" << endl;
+        linea(72);
+
+        for (int d = 0; d < DIAS_SEMANA; d++) {
+            string etiquetaDia = DIAS[d] + " (" + FECHAS_SEMANA[d] + ")";
+            float ahorroDia = totalesDiaSin[d] - totalesDiaCon[d];
+            cout << left << setw(18) << etiquetaDia
+                 << right << setw(13) << "$" << setw(8) << totalesDiaCon[d]
+                 << setw(10) << "$" << setw(8) << totalesDiaSin[d]
+                 << setw(10) << "$" << setw(8) << ahorroDia << endl;
+        }
+        linea(72);
+
+        cout << endl << "Indicadores clave de la semana:" << endl;
+        cout << "  - Dia mas caro:          " << DIAS[idxDiaCaro] << " (" << FECHAS_SEMANA[idxDiaCaro]
+             << ") -> $" << totalesDiaCon[idxDiaCaro] << " COP" << endl;
+        cout << "  - Hora mas cara:         " << DIAS[diaHoraCara] << " (" << FECHAS_SEMANA[diaHoraCara]
+             << ") a las " << horaHoraCara << ":00 h -> $" << valorHoraCara
+             << " COP (Bolsa XM: $" << mercado->precio(diaHoraCara, horaHoraCara) << " COP/kWh)" << endl;
+        cout << "  - Promedio diario (con): $" << promedioDiario << " COP/dia" << endl;
+
+        cout << endl << "Balance economico semanal y proyeccion mensual:" << endl;
+        cout << "  - Costo semanal CON gestor:  $" << totalCon << " COP ("
+             << setprecision(1) << medidor.getKWh() << " kWh)" << endl;
+        cout << "  - Costo semanal SIN gestor:  $" << setprecision(0) << totalSin << " COP" << endl;
+        cout << "  - Ahorro semanal logrado:    $" << ahorroSemanal << " COP ("
+             << setprecision(1) << porcentajeAhorro << " %)" << endl;
+        cout << "  - Proyeccion ahorro mensual: $" << setprecision(0) << ahorroMensual
+             << " COP/mes (x" << SEMANAS_MES << " semanas)" << endl;
+
+        cout << endl << "Cumplimiento de horas minimas diarias (cargas aplazables):" << endl;
+        for (int i = 0; i < numCargas; i++) {
+            if (cargas[i]->esAplazable()) {
+                cout << "  - " << setw(18) << left << cargas[i]->getNombre() << right
+                     << ": " << diasCumplidos[i] << " de " << DIAS_SEMANA
+                     << " dias cumplidos (minimo " << cargas[i]->getHorasMinimas() << " h/dia)" << endl;
+            }
+        }
+        linea(72, '=');
+    }
+};
+
 };
 
 // =============================================================
