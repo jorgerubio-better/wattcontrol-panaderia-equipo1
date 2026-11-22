@@ -1055,6 +1055,42 @@ public:
         }
         linea(72, '=');
     }
+
+    // Opcion 6 (EA3): Muestra la matriz completa costos[7][24] hora por hora (en dos bloques de 12 h)
+    void mostrarMatrizCostos() {
+        if (!semanaSimulada) {
+            cout << "Aun no se ha simulado la semana real. Use primero la Opcion 5." << endl;
+            return;
+        }
+
+        cout << endl;
+        linea(86, '=');
+        cout << "  MATRIZ HORARIA DE COSTOS (COP) - costos[7][24] CON GESTOR" << endl;
+        cout << "  Negocio: " << nombre << " | Responsable: " << responsable << endl;
+        linea(86, '=');
+
+        for (int bloque = 0; bloque < 2; bloque++) {
+            int hInicio = bloque * 12;
+            int hFin = hInicio + 12;
+            cout << endl << "Franja " << (bloque == 0 ? "00:00 a 11:00 h (Madrugada y Manana)" : "12:00 a 23:00 h (Tarde, Pico y Noche)") << ":" << endl;
+            cout << left << setw(11) << "Dia";
+            for (int h = hInicio; h < hFin; h++) {
+                cout << right << setw(6) << (h < 10 ? "0" + to_string(h) + "h" : to_string(h) + "h");
+            }
+            cout << endl;
+            linea(86);
+
+            cout << fixed << setprecision(0);
+            for (int d = 0; d < DIAS_SEMANA; d++) {
+                cout << left << setw(11) << DIAS[d];
+                for (int h = hInicio; h < hFin; h++) {
+                    cout << right << setw(6) << costos[d][h];
+                }
+                cout << endl;
+            }
+        }
+        linea(86, '=');
+    }
 };
 
 // =============================================================
@@ -1105,7 +1141,7 @@ int main() {
         cout << "3. Simular un dia completo (24 h)" << endl;
         cout << "4. Ver resumen del ultimo dia simulado" << endl;
         cout << "5. Simular la semana real (21 al 27 de sept. 2026)" << endl;
-        cout << "6. Ver reporte semanal completo" << endl;
+        cout << "6. Ver matriz horaria de costos (7 dias x 24 horas)" << endl;
         cout << "0. Salir" << endl;
         cout << "Opcion: ";
         cin >> opcion;
@@ -1163,9 +1199,9 @@ int main() {
             panaderia.simularSemana();
             break;
 
-        // Opcion 6: Mostrar el reporte semanal completo
+        // Opcion 6: Mostrar la matriz horaria completa costos[7][24]
         case 6:
-            panaderia.mostrarReporteSemanal();
+            panaderia.mostrarMatrizCostos();
             break;
 
         // Opcion 0: Salir del programa
