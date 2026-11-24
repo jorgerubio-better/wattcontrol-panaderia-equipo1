@@ -25,7 +25,7 @@ Sistema de gestión energética en C++ diseñado para la **Panadería El Trigo d
 ## 🔗 Accesos Rápidos a Entregas (EA2 y EA3)
 
 - 🚀 **[Ver entrega actual EA3 (Tag `ea3`)](https://github.com/jorgerubio-better/wattcontrol-panaderia-equipo1/tree/ea3)**
-- 🎬 **Video de Sustentación EA3:** *(En producción — próximamente disponible en vdbcreator.com)*
+- 🎬 **[Ver Video de Sustentación EA3 en vdbcreator.com](https://vdbcreator.com/screening/Act3WattControlPanaderia)**
 - 🔌 **[Ver Circuito Público en TinkerCad (Reto Extra +0,3)](https://www.tinkercad.com/things/9GOirWZ5FvB-circuito-tinkercad?sharecode=K-Z3pdnRC6QesqsSHOuCuKrVLk0OzmnR5VBd9xhRUMU)**
 - 📦 **[Ver código y README exacto de la EA2 (Tag `ea2`)](https://github.com/jorgerubio-better/wattcontrol-panaderia-equipo1/tree/ea2)**
 - 🎥 **[Ver Video de Sustentación EA2 en vdbcreator.com](https://vdbcreator.com/screening/WattControlPanaderia)**
